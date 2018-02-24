@@ -1,0 +1,145 @@
+import os
+import sys
+
+def FindAround(line, S, E, k, Type):
+	num = k;
+	s = S;
+	for s in range(S, -1, -1):
+		if line[s] == ' ':
+			break;
+	stringAhead = line[0: s];
+	WordList = stringAhead.split();
+	L = len(WordList);
+	ListAhead = [WordList[i].replace('^', '') for i in range(max(0, L-k), L)];
+
+	e = E;
+	for e in range(E+1, len(line)):
+		if line[e] == ' ':
+			break;
+	stringAfter = line[e+1: len(line)];
+	WordList = stringAfter.split();
+	L = len(WordList);
+	ListAfter = [WordList[i].replace('^', '') for i in range(0, min(L, len(WordList)))];
+
+	if Type =='Ahead':
+		return ListAhead;
+	elif Type=='After':
+		return ListAfter;
+	elif Type=='Both':
+		return ListAhead+ListAfter;
+
+def Construct(fid):
+	f=open(fid);
+	X = []; Y = [];
+	for line in f:
+		l = len(line);
+		s = 0; e = 0;
+		state = 0;
+		for i in range(l):
+			if line[i]=='^' and state==0:
+				s = i;
+				state += 1;
+			elif line[i]=='^' and state==1:
+				e = i;
+				state += 1;
+			elif line[i]=='<':
+				s=i;
+			elif line[i]=='>':
+				e=i;
+
+			# a new example appears
+			if line[i]=='>' or state==2:
+				x=[];
+				if state==2:
+					Y.append(1);
+				else:
+					Y.append(-1);
+				name = line[s:e+1];
+				name = name.strip('^');
+				AllLetterCapital = 1;
+				for j in range(len(name)):
+					if name[j].islower() or name[j].islower():
+						AllLetterCapital = 0;
+						break;
+				name = name.split();
+				FirstLetterCapital = 1;
+				for j in range(len(name)):
+					if name[j][0].islower() or name[j][0].islower():
+						FirstLetterCapital = 0;
+						break;
+
+				# feature 1
+				x.append(FirstLetterCapital);
+
+				# feature 2
+				x.append(len(name));
+
+				k=1;
+				Ahead = FindAround(line, s, e, k, 'Ahead');
+				ExistMr = 0;
+				for j in Ahead:
+					if i in WhiteList_Mr:
+						ExistMr=1;
+						break;
+				# feature 3
+				x.append(ExistMr);
+
+				k=3;
+				Both = FindAround(line, s, e, k, 'Both');
+				ExistVerb = 0;
+				for j in Both:
+					if j.lower() in WhiteList_verb:
+						ExistVerb=1;
+						break;
+				# feature 4
+				x.append(ExistVerb);
+
+				AtBeginEnd = 0;
+				if s == 0 or e == len(line):
+					AtBeginEnd = 1;
+					# feature 5
+				x.append(AtBeginEnd);
+
+				# feature 6
+				x.append(AllLetterCapital);
+
+				k=3;
+				Ahead = FindAround(line, s, e, k, 'Ahead');
+				ExistThe = 0;
+				for j in Ahead:
+					if j.lower() == 'the' or j.lower() == 'a':
+						ExistThe=1;
+						break;
+
+				# feature 7
+				x.append(ExistThe);
+
+				inBlackList = 0;
+				for j in name:
+					if j.lower() in BlackList:
+						inBlackList = 1;
+				#feature 8
+				x.append(inBlackList);
+				X.append(x);
+				state = 0;
+
+	return X, Y;
+
+Data=sys.argv[1];
+fids=os.listdir(Data);
+#traing data, input
+X = [];
+#training data, label
+Y = [];
+num_of_files = 0;
+WhiteList_Mr = ['mr', 'ms', 'sir', 'lord', 'mrs', 'chairman', 'leader'];
+WhiteList_verb = ['say', 'says', 'said', 'feel', 'feels', 'felt'];
+BlackList = ['england', 'lib dems', 'tory', 'tories', 'lim dem', 'monday'\
+			'sunday', 'british', 'labour Party', 'manchester'];
+for fid in fids:
+	if fid.endswith('.txt'):
+		num_of_files += 1;
+		X_fid, Y_fid = Construct(Data+'/'+fid);
+		X=X+X_fid;
+		Y=Y+Y_fid;
+print(len(Y));
