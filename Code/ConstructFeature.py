@@ -3,23 +3,34 @@ import sys
 
 def FindAround(line, S, E, k, Type):
 	num = k;
+	symbol = [',', ':', '<', '>', '^'];
 	s = S;
-	for s in range(S, -1, -1):
+	for s in range(S-1, -1, -1):
 		if line[s] == ' ':
 			break;
 	stringAhead = line[0: s];
 	WordList = stringAhead.split();
 	L = len(WordList);
-	ListAhead = [WordList[i].replace('^', '') for i in range(max(0, L-k), L)];
+
+	for i in range(L):
+		for j in symbol:
+			WordList[i] = WordList[i].replace(j, '');
+
+	ListAhead = [WordList[i].replace('^', '').replace('<','').replace('>', '') for i in range(max(0, L-k), L)];
 
 	e = E;
 	for e in range(E+1, len(line)):
 		if line[e] == ' ':
 			break;
-	stringAfter = line[e+1: len(line)];
+	stringAfter = line[e: len(line)];
 	WordList = stringAfter.split();
 	L = len(WordList);
-	ListAfter = [WordList[i].replace('^', '') for i in range(0, min(L, len(WordList)))];
+
+	for i in range(L):
+		for j in symbol:
+			WordList[i] = WordList[i].replace(j, '');
+
+	ListAfter = [WordList[i].replace('^', '').replace('<','').replace('>', '') for i in range(0, min(k, len(WordList)))];
 
 	if Type =='Ahead':
 		return ListAhead;
@@ -55,16 +66,20 @@ def Construct(fid):
 				else:
 					Y.append(-1);
 				name = line[s:e+1];
-				name = name.strip('^');
+				name = name.replace('^', '');
+				name = name.replace('<', '');
+				name = name.replace('>', '');
+
 				AllLetterCapital = 1;
 				for j in range(len(name)):
-					if name[j].islower() or name[j].islower():
+					if name[j].islower():
 						AllLetterCapital = 0;
 						break;
+
 				name = name.split();
 				FirstLetterCapital = 1;
 				for j in range(len(name)):
-					if name[j][0].islower() or name[j][0].islower():
+					if name[j][0].islower():
 						FirstLetterCapital = 0;
 						break;
 
@@ -86,6 +101,7 @@ def Construct(fid):
 
 				k=3;
 				Both = FindAround(line, s, e, k, 'Both');
+
 				ExistVerb = 0;
 				for j in Both:
 					if j.lower() in WhiteList_verb:
@@ -115,6 +131,7 @@ def Construct(fid):
 				x.append(ExistThe);
 
 				inBlackList = 0;
+
 				for j in name:
 					if j.lower() in BlackList:
 						inBlackList = 1;
@@ -135,11 +152,10 @@ num_of_files = 0;
 WhiteList_Mr = ['mr', 'ms', 'sir', 'lord', 'mrs', 'chairman', 'leader'];
 WhiteList_verb = ['say', 'says', 'said', 'feel', 'feels', 'felt'];
 BlackList = ['england', 'lib dems', 'tory', 'tories', 'lim dem', 'monday'\
-			'sunday', 'british', 'labour Party', 'manchester'];
+			'sunday', 'british', 'labour Party', 'manchester', 'association'];
 for fid in fids:
 	if fid.endswith('.txt'):
 		num_of_files += 1;
 		X_fid, Y_fid = Construct(Data+'/'+fid);
 		X=X+X_fid;
 		Y=Y+Y_fid;
-print(len(Y));
