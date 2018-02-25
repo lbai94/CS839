@@ -1,5 +1,6 @@
 import os
 import sys
+from sklearn import svm
 
 def FindAround(line, S, E, k, Type):
 	num = k;
@@ -159,3 +160,14 @@ for fid in fids:
 		X_fid, Y_fid = Construct(Data+'/'+fid);
 		X=X+X_fid;
 		Y=Y+Y_fid;
+
+fid = './Input.txt';
+f = open(fid, 'w');
+for i in range(len(Y)):
+	for j in range(len(X[i])):
+		if j==len(X[i])-1:
+			f.write(str(X[i][j]) + '\n');
+		else:
+			f.write(str(X[i][j]) + ',');
+	f.write(str(Y[i]) + '\n');
+f.close();
