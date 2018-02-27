@@ -4,7 +4,7 @@
 # In[15]:
 
 
-cd E:\18Spring\CS839\Stage1\CS839_1\Code
+#cd E:\18Spring\CS839\Stage1\CS839_1\Code
 
 
 # In[16]:
