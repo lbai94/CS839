@@ -3,9 +3,9 @@ import sys
 import numpy as np
 from sklearn.ensemble import RandomForestClassifier
 
-fid = './Input.txt';
+fid = './train.txt';
 f = open(fid);
-X = []; Y = [];
+Xtr = []; Ytr = [];
 while 1:
 	x = f.readline();
 	if not x:
@@ -16,20 +16,29 @@ while 1:
 	y = f.readline();
 	y = y.rstrip('\n');
 	y = float(y);
-	X.append(x);
-	Y.append(y);
-
+	Xtr.append(x);
+	Ytr.append(y);
 f.close();
-N = len(Y);
-I = list(range(N));
-Tnum = int(N/5);
-TeList = np.random.choice(N, Tnum);
-Xte = [X[i] for i in TeList];
-Yte = [Y[i] for i in TeList];
-Xtr = [X[i] for i in I if i not in TeList];
-Ytr = [Y[i] for i in I if i not in TeList];
-clf = RandomForestClassifier(n_estimators=50)
-clf = clf.fit(X, Y)
+
+fid = './test.txt';
+f = open(fid);
+Xte = []; Yte = [];
+while 1:
+	x = f.readline();
+	if not x:
+		break;
+	x = x.rstrip('\n');
+	x = x.split(',');
+	x = [float(x[i]) for i in range(len(x))];
+	y = f.readline();
+	y = y.rstrip('\n');
+	y = float(y);
+	Xte.append(x);
+	Yte.append(y);
+f.close();
+
+clf = RandomForestClassifier(n_estimators=10)
+clf = clf.fit(Xtr, Ytr)
 Yp = clf.predict(Xte);
 Np = 0;
 Nr = 0;

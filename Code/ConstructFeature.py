@@ -61,11 +61,12 @@ def Construct(fid):
 
 			# a new example appears
 			if line[i]=='>' or state==2:
-				x=[];
+				x = []; y = [];
 				if state==2:
-					Y.append(1);
+					label = 1;
 				else:
-					Y.append(-1);
+					label=-1;
+				y.append(label);
 				name = line[s:e+1];
 				name = name.replace('^', '');
 				name = name.replace('<', '');
@@ -86,6 +87,10 @@ def Construct(fid):
 
 				# feature 1
 				x.append(FirstLetterCapital);
+
+				if len(name)<=1 and label==-1:
+					state=0;
+					continue;
 
 				# feature 2
 				x.append(len(name));
@@ -115,7 +120,7 @@ def Construct(fid):
 				if s == 0 or e == len(line):
 					AtBeginEnd = 1;
 					# feature 5
-				x.append(AtBeginEnd);
+				#x.append(AtBeginEnd);
 
 				# feature 6
 				x.append(AllLetterCapital);
@@ -139,8 +144,8 @@ def Construct(fid):
 				#feature 8
 				x.append(inBlackList);
 				X.append(x);
+				Y=Y+y;
 				state = 0;
-
 	return X, Y;
 
 Data=sys.argv[1];
@@ -160,6 +165,7 @@ for fid in fids:
 		X_fid, Y_fid = Construct(Data+'/'+fid);
 		X=X+X_fid;
 		Y=Y+Y_fid;
+print(len(Y));
 
 fid = './Input.txt';
 f = open(fid, 'w');

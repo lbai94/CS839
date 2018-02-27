@@ -2,9 +2,9 @@ import os
 import sys
 from sklearn import svm
 
-fid = './Input.txt';
+fid = './train.txt';
 f = open(fid);
-X = []; Y = [];
+Xtr = []; Ytr = [];
 while 1:
 	x = f.readline();
 	if not x:
@@ -15,6 +15,23 @@ while 1:
 	y = f.readline();
 	y = y.rstrip('\n');
 	y = float(y);
-	X.append(x);
-	Y.append(y);
+	Xtr.append(x);
+	Ytr.append(y);
+f.close();
+
+fid = './test.txt';
+f = open(fid);
+Xte = []; Yte = [];
+while 1:
+	x = f.readline();
+	if not x:
+		break;
+	x = x.rstrip('\n');
+	x = x.split(',');
+	x = [float(x[i]) for i in range(len(x))];
+	y = f.readline();
+	y = y.rstrip('\n');
+	y = float(y);
+	Xte.append(x);
+	Yte.append(y);
 f.close();
