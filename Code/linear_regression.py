@@ -1,13 +1,13 @@
 
 # coding: utf-8
 
-# In[2]:
+# In[3]:
 
 
 #cd E:\18Spring\CS839\Stage1\CS839_1\Code
 
 
-# In[3]:
+# In[10]:
 
 
 import os
@@ -80,28 +80,28 @@ Y_predict = regr.predict(X_test)
 
 
 
-# In[6]:
+# In[11]:
 
 
 from sklearn.model_selection import cross_val_score
 from sklearn import metrics
-threshold = 0.5
+threshold = 0.7
 Y_predict = [int(y>threshold) for y in Y_predict]
 p = metrics.precision_score(Y_test, Y_predict)
 r = metrics.recall_score(Y_test,Y_predict)
-print p, r
+print "test result, p and r", p, r
 
 
-# In[14]:
+# In[12]:
 
 
 #cross validation
 from sklearn.utils import shuffle
-#X_train, Y_train = shuffle(X_train,Y_train)
+X_train, Y_train = shuffle(X_train,Y_train)
 train_size = len(X_train)
-print train_size
+#print train_size
 subset_size = train_size/5
-print subset_size
+#print subset_size
 p_list = []
 r_list = []
 f1_list = []
@@ -120,7 +120,7 @@ for i in range(0, 5):
     p_list.append(metrics.precision_score(cv_test_Y, cv_predict))
     r_list.append(metrics.recall_score(cv_test_Y, cv_predict))
     f1_list.append(metrics.f1_score(cv_test_Y, cv_predict))
-print np.average(p_list)
-print np.average(r_list)
-print np.average(f1_list)
+print "cross validation: p average, ",np.average(p_list)
+print "cross validation: r average, ",np.average(r_list)
+print "cross validation: f1 average, ",np.average(f1_list)
 
