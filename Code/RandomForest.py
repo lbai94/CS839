@@ -2,10 +2,11 @@ import os
 import sys
 import numpy as np
 from sklearn.ensemble import RandomForestClassifier
+from sklearn.model_selection import cross_val_score
 
 fid = './train.txt';
 f = open(fid);
-Xtr = []; Ytr = [];
+X_train = []; Y_train = [];
 while 1:
 	x = f.readline();
 	if not x:
@@ -16,13 +17,13 @@ while 1:
 	y = f.readline();
 	y = y.rstrip('\n');
 	y = float(y);
-	Xtr.append(x);
-	Ytr.append(y);
+	X_train.append(x);
+	Y_train.append(y);
 f.close();
 
 fid = './test.txt';
 f = open(fid);
-Xte = []; Yte = [];
+X_test = []; Y_test = [];
 while 1:
 	x = f.readline();
 	if not x:
@@ -33,25 +34,28 @@ while 1:
 	y = f.readline();
 	y = y.rstrip('\n');
 	y = float(y);
-	Xte.append(x);
-	Yte.append(y);
+	X_test.append(x);
+	Y_test.append(y);
 f.close();
 
-clf = RandomForestClassifier(n_estimators=10)
-clf = clf.fit(Xtr, Ytr)
-Yp = clf.predict(Xte);
+clf = RandomForestClassifier(n_estimators=20);
+scores = cross_val_score(clf, X_train, Y_train, cv=5)
+print scores, scores.mean();
+
+clf = clf.fit(X_train, Y_train)
+Yp = clf.predict(X_test);
 Np = 0;
 Nr = 0;
 TotalPositive = 0;
-for i in range(len(Yte)):
-	if Yp[i]==Yte[i]:
+for i in range(len(Y_test)):
+	if Yp[i]==Y_test[i]:
 		Np += 1;
-	if Yte[i]==1:
+	if Y_test[i]==1:
 		TotalPositive += 1;
-		if Yp[i]==Yte[i]:
+		if Yp[i]==Y_test[i]:
 			Nr += 1;
 
-print('Precision: %f' %(float(Np)/len(Yte)));
+print('Precision: %f' %(float(Np)/len(Y_test)));
 print('Recall: %f' %(float(Nr)/TotalPositive));
 
 

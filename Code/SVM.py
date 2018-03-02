@@ -1,7 +1,22 @@
+
+# coding: utf-8
+
+# In[2]:
+
+
+#cd E:\18Spring\CS839\Stage1\CS839_1\Code
+
+
+# In[12]:
+
+
 import os
 import sys
+#from sklearn import svm
+import matplotlib.pyplot as plt
 import numpy as np
-from sklearn.svm import SVC
+from sklearn import svm
+from sklearn.model_selection import cross_val_score
 
 fid = './train.txt';
 f = open(fid);
@@ -19,9 +34,10 @@ while 1:
 	Xtr.append(x);
 	Ytr.append(y);
 f.close();
-       
-fid1 = './test.txt';
-f = open(fid1);
+
+
+fid = './test.txt';
+f = open(fid);
 Xte = []; Yte = [];
 while 1:
 	x = f.readline();
@@ -35,10 +51,13 @@ while 1:
 	y = float(y);
 	Xte.append(x);
 	Yte.append(y);
-f.close();       
-       
-clf = SVC();
-clf = clf.fit(Xtr, Ytr);
+f.close();
+
+clf = svm.SVC()
+scores = cross_val_score(clf, Xtr, Ytr, cv=5)
+print scores, scores.mean();
+
+clf.fit(Xtr, Ytr);
 Yp = clf.predict(Xte);
 Np = 0;
 Nr = 0;

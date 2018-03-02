@@ -151,9 +151,15 @@ def Construct(fid):
 Data=sys.argv[1];
 fids=os.listdir(Data);
 #traing data, input
-X = [];
+X_train = [];
 #training data, label
-Y = [];
+Y_train = [];
+
+#traing data, input
+X_test = [];
+#training data, label
+Y_test = [];
+
 num_of_files = 0;
 WhiteList_Mr = ['mr', 'ms', 'sir', 'lord', 'mrs', 'chairman', 'leader'];
 WhiteList_verb = ['say', 'says', 'said', 'feel', 'feels', 'felt'];
@@ -162,18 +168,40 @@ BlackList = ['england', 'lib dems', 'tory', 'tories', 'lim dem', 'monday'\
 for fid in fids:
 	if fid.endswith('.txt'):
 		num_of_files += 1;
-		X_fid, Y_fid = Construct(Data+'/'+fid);
-		X=X+X_fid;
-		Y=Y+Y_fid;
-print(len(Y));
+print(num_of_files);
+trainNum = int(num_of_files*3.0/4);
+testNum = num_of_files-trainNum;
 
-fid = './Input.txt';
-f = open(fid, 'w');
-for i in range(len(Y)):
-	for j in range(len(X[i])):
-		if j==len(X[i])-1:
-			f.write(str(X[i][j]) + '\n');
+n=0;
+for fid in fids:
+	if fid.endswith('.txt'):
+		X_fid, Y_fid = Construct(Data+'/'+fid);
+		if n<=trainNum:
+			X_train=X_train+X_fid;
+			Y_train=Y_train+Y_fid;
 		else:
-			f.write(str(X[i][j]) + ',');
-	f.write(str(Y[i]) + '\n');
+			X_test=X_test+X_fid;
+			Y_test=Y_test+Y_fid;
+		n=n+1;
+
+fid = './train.txt';
+f = open(fid, 'w');
+for i in range(len(Y_train)):
+	for j in range(len(X_train[i])):
+		if j==len(X_train[i])-1:
+			f.write(str(X_train[i][j]) + '\n');
+		else:
+			f.write(str(X_train[i][j]) + ',');
+	f.write(str(Y_train[i]) + '\n');
+f.close();
+
+fid = './test.txt';
+f = open(fid, 'w');
+for i in range(len(Y_test)):
+	for j in range(len(X_test[i])):
+		if j==len(X_test[i])-1:
+			f.write(str(X_test[i][j]) + '\n');
+		else:
+			f.write(str(X_test[i][j]) + ',');
+	f.write(str(Y_test[i]) + '\n');
 f.close();
