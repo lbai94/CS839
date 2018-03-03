@@ -85,7 +85,7 @@ Y_predict = regr.predict(X_test)
 
 from sklearn.model_selection import cross_val_score
 from sklearn import metrics
-threshold = 0.7
+threshold = 0.5
 Y_predict = [int(y>threshold) for y in Y_predict]
 p = metrics.precision_score(Y_test, Y_predict)
 r = metrics.recall_score(Y_test,Y_predict)

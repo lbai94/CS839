@@ -38,9 +38,16 @@ while 1:
 	Y_test.append(y);
 f.close();
 
+print('On Training Data:')
 clf = tree.DecisionTreeClassifier();
-scores = cross_val_score(clf, X_train, Y_train, cv=5)
-print scores, scores.mean();
+scores = cross_val_score(clf, X_train, Y_train, scoring='precision_macro', cv=5)
+print('precision: %f' %scores.mean());
+
+scores = cross_val_score(clf, X_train, Y_train, scoring='recall_macro', cv=5)
+print('recall: %f' %scores.mean());
+
+scores = cross_val_score(clf, X_train, Y_train, scoring='f1_macro', cv=5)
+print('f1: %f' %scores.mean());
 
 clf = clf.fit(X_train, Y_train);
 Yp = clf.predict(X_test);
@@ -55,6 +62,7 @@ for i in range(len(Y_test)):
 		if Yp[i]==Y_test[i]:
 			Nr += 1;
 
+print('On Test Data:')
 print('Precision: %f' %(float(Np)/len(Y_test)));
 print('Recall: %f' %(float(Nr)/TotalPositive));
 
