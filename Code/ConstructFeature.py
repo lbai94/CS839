@@ -1,7 +1,8 @@
 import os
 import sys
 from sklearn import svm
-
+import shutil
+import numpy as np
 def FindAround(line, S, E, k, Type):
 	num = k;
 	symbol = [',', ':', '<', '>', '^'];
@@ -165,23 +166,20 @@ WhiteList_Mr = ['mr', 'ms', 'sir', 'lord', 'mrs', 'chairman', 'leader'];
 WhiteList_verb = ['say', 'says', 'said', 'feel', 'feels', 'felt'];
 BlackList = ['england', 'lib dems', 'tory', 'tories', 'lim dem', 'monday'\
 			'sunday', 'british', 'labour Party', 'manchester', 'association'];
-for fid in fids:
-	if fid.endswith('.txt'):
-		num_of_files += 1;
-print(num_of_files);
-trainNum = int(num_of_files*3.0/4);
-testNum = num_of_files-trainNum;
 
 n=0;
+I=np.random.permutation(320)[0:220];
 for fid in fids:
 	if fid.endswith('.txt'):
 		X_fid, Y_fid = Construct(Data+'/'+fid);
-		if n<=trainNum:
+		if n in I:
 			X_train=X_train+X_fid;
 			Y_train=Y_train+Y_fid;
+			shutil.copy('/Users/host/Desktop/YuzheMa/Work/Class/Homework/CS839/CS839_1/Data/'+fid, '/Users/host/Desktop/YuzheMa/Work/Class/Homework/CS839/CS839_1/Data/Train');
 		else:
 			X_test=X_test+X_fid;
 			Y_test=Y_test+Y_fid;
+			shutil.copy('/Users/host/Desktop/YuzheMa/Work/Class/Homework/CS839/CS839_1/Data/'+fid, '/Users/host/Desktop/YuzheMa/Work/Class/Homework/CS839/CS839_1/Data/Test')
 		n=n+1;
 
 fid = './train.txt';
@@ -195,6 +193,9 @@ for i in range(len(Y_train)):
 	f.write(str(Y_train[i]) + '\n');
 f.close();
 
+print(len([Y_train[i] for i in range(len(Y_train)) if Y_train[i]==1]));
+print(len([Y_train[i] for i in range(len(Y_train)) if Y_train[i]==-1]));
+
 fid = './test.txt';
 f = open(fid, 'w');
 for i in range(len(Y_test)):
@@ -205,3 +206,6 @@ for i in range(len(Y_test)):
 			f.write(str(X_test[i][j]) + ',');
 	f.write(str(Y_test[i]) + '\n');
 f.close();
+print(len(Y_test))
+print(len([Y_test[i] for i in range(len(Y_test)) if Y_test[i]==1]));
+print(len([Y_test[i] for i in range(len(Y_test)) if Y_test[i]==-1]));

@@ -38,7 +38,7 @@ while 1:
 	Y_test.append(y);
 f.close();
 
-clf = RandomForestClassifier(n_estimators=20);
+clf = RandomForestClassifier(n_estimators=10);
 scores = cross_val_score(clf, X_train, Y_train, cv=5)
 print scores, scores.mean();
 
