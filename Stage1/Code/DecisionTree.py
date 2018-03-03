@@ -63,7 +63,10 @@ for i in range(len(Y_test)):
 			Nr += 1;
 
 print('On Test Data:')
-print('Precision: %f' %(float(Np)/len(Y_test)));
-print('Recall: %f' %(float(Nr)/TotalPositive));
+p=float(Np)/len(Y_test);
+r=float(Nr)/TotalPositive;
+print('Precision: %f' %p);
+print('Recall: %f' %r);
+print('F1: %f' %(2*(p*r)/(p+r)));
 
 
