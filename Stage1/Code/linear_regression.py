@@ -1,13 +1,13 @@
 
 # coding: utf-8
 
-# In[3]:
+# In[1]:
 
 
-#cd E:\18Spring\CS839\Stage1\CS839_1\Code
+#cd E:\18Spring\CS839\Stage1\CS839_1\Stage1\Code
 
 
-# In[10]:
+# In[14]:
 
 
 import os
@@ -73,26 +73,27 @@ regr = linear_model.LinearRegression()
 # Train the model using the training sets
 regr.fit(X_train, Y_train)
 
-Y_predict = regr.predict(X_test)
+Y_predict = regr.predict(X_test) 
 
 
 
 
 
 
-# In[11]:
+# In[15]:
 
 
 from sklearn.model_selection import cross_val_score
 from sklearn import metrics
-threshold = 0.5
+threshold = 0.8
 Y_predict = [int(y>threshold) for y in Y_predict]
 p = metrics.precision_score(Y_test, Y_predict)
 r = metrics.recall_score(Y_test,Y_predict)
-print "test result, p and r", p, r
+f1 = metrics.f1_score(Y_test,Y_predict)
+print "test result, p, r, and f1", p,r, f1
 
 
-# In[12]:
+# In[16]:
 
 
 #cross validation
