@@ -34,5 +34,5 @@ class AmazonSpider(scrapy.Spider):
             'Author': response.css('td.a-size-base div.a-row span.a-size-medium::text').extract_first().strip(),
             'Publisher': response.css('div.content ul li').re_first(r'<b>Publisher:</b>.*\(')[18:-1].strip(),
             'Time':  response.css('span.a-text-normal::text').re_first(r'[A-Za-z]+\s[0-9]+,\s[0-9]+'),
-            'Language': response.css('div.content ul li').re_first(r'<b>Language:</b>.*')[17:-5],
+            #'Language': response.css('div.content ul li').re_first(r'<b>Language:</b>.*')[17:-5],
         }
