@@ -11,7 +11,7 @@ class AmazonSpider(scrapy.Spider):
 
     #start_urls = ['https://www.amazon.com/s/ref=lp_283155_nr_p_n_feature_nine_bro_1?fst=as%3Aoff&rh=n%3A283155%2Cp_n_feature_nine_browse-bin%3A3291436011&bbn=283155&ie=UTF8&qid=1521358536&rnid=3291435011']
     #start_urls = ['https://www.amazon.com/s/ref=lp_10_pg_2?rh=n%3A283155%2Cn%3A%211000%2Cn%3A10&page=2&ie=UTF8&qid=1521359718']
-    start_urls = ['https://www.amazon.com/s/ref=lp_3_pg_2?rh=n%3A283155%2Cn%3A%211000%2Cn%3A3&page=2&ie=UTF8&qid=1521360739']
+    start_urls = ['https://www.amazon.com/s/ref=lp_75_pg_2?rh=n%3A283155%2Cn%3A%211000%2Cn%3A75&page=2&ie=UTF8&qid=1523743389']
 
     def parse(self, response):
         # follow links to book pages

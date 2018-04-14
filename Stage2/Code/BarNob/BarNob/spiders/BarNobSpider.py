@@ -8,9 +8,9 @@ class BarNobSpider(scrapy.Spider):
     #start_urls = ['https://www.amazon.com/s/ref=lp_17_pg_2?rh=n%3A283155%2Cn%3A%211000%2Cn%3A17&page=2&ie=UTF8&qid=1521349537']
 
     #start_urls = ['https://www.amazon.com/s/ref=lp_283155_nr_p_n_feature_nine_bro_1?fst=as%3Aoff&rh=n%3A283155%2Cp_n_feature_nine_browse-bin%3A3291436011&bbn=283155&ie=UTF8&qid=1521358536&rnid=3291435011']
-    start_urls = ['https://www.barnesandnoble.com/s/mathematics?_requestid=27757']
+    #start_urls = ['https://www.barnesandnoble.com/s/mathematics?_requestid=27757']
     #start_urls = ['https://www.amazon.com/s/ref=nb_sb_noss_2?url=search-alias%3Daps&field-keywords=books']
-
+    start_urls = ['https://www.barnesandnoble.com/b/books/fiction/american-fiction/_/N-29Z8q8Z10k3']
     def parse(self, response):
         # follow links to book pages
         book_pages = response.css('a[class="pImageLink "]::attr(href)').extract()
