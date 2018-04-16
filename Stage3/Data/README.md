@@ -1,7 +1,7 @@
 # Two Tables of Book Info
 
 <li><b><a href="https://github.com/bailan0506/CS839/blob/master/Stage3/Data/Amazon.csv">Table A: Amazon.csv</a></b>: Table of book info extracted from amazon.com webpage. </li>
-<li><b><a href="https://github.com/bailan0506/CS839/blob/master/Stage3/Data/Barnob.csv">Table B:BarNob.csv</b>: Table of book info extracted from barnesandnoble.com webpage.</li> <br>
+<li><b><a href="https://github.com/bailan0506/CS839/blob/master/Stage3/Data/Barnob.csv">Table B:BarNob.csv</a></b>: Table of book info extracted from barnesandnoble.com webpage.</li> <br>
 
 Schema: Amazon(ID,Publisher, Time, Author, Title) and BarNob(ID,Publisher, Time, Author, Title).
 
